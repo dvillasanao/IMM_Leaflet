@@ -47,3 +47,44 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+<<<<<<< HEAD
+=======
+
+.Rproj.user
+
+#RHistory
+.Rhistory
+
+# Archivo 2020 
+/2020/Data/Bases_Municipios por Grado.xlsx
+/2020/Graficos/*
+/2020/Output/docs/*
+/2020/Output/IMM_2020_files/
+/2020/Output/IMM_2020.html
+/2020/Output/IMM_2020.RData
+/2020/Output/PopUp/*.RDS
+/2020/Output/Shapes/*.rds
+
+# Archivo 2015 
+/2015/Data/Bases_Municipios por Grado.xlsx
+/2015/Graficos/*
+/2015/Output/docs/*
+/2015/Output/IMM_2015_files/
+/2015/Output/IMM_2015.html
+/2015/Output/IMM_2015.RData
+/2015/Output/PopUp/*.RDS
+/2015/Output/Shapes/*.rds
+
+# Archivo 2010 
+/2010/Data/Bases_Municipios por Grado.xlsx
+/2010/Graficos/*
+/2010/Output/docs/*
+/2010/Output/IMM_2010_files/
+/2010/Output/IMM_2010.html
+/2010/Output/IMM_2010.RData
+/2010/Output/PopUp/*.RDS
+/2010/Output/Shapes/*.rds
+
+
+IMM_2010_2020.Rmd
+>>>>>>> leaflet-branch

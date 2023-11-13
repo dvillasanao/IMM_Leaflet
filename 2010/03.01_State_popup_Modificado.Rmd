@@ -1,0 +1,201 @@
+---
+title: "Popups | Cambio de estructura "
+author: "Diana Villasana Ocampo"
+output:
+   html_document:
+      highlight: tango
+      theme: flatly
+      toc: yes
+      toc_depth: 2
+      toc_float:
+        collapsed: yes
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = FALSE, 
+                      cache.lazy = FALSE, eval = FALSE, class.source = "fold-show")
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+options(digits = 2, encoding = "UTF8")
+```   
+ 
+```{r, echo=FALSE}
+rm(list = ls())
+```
+
+```{r, echo=FALSE}
+setwd(here::here())
+```
+
+**Libraries**
+
+```{r}
+require(dplyr)
+require(forcats)
+require(tibble)
+require(sf)
+require(sp)
+require(stringr)
+require(dplyr)
+require(leaflet)
+require(RColorBrewer)
+```
+
+# Base de datos   
+
+```{r}
+load(paste0(here::here(), "/2010/Output/IMM_2010.RData"))
+```
+
+
+# Paleta de colores 
+
+```{r}
+paleta <- c("#13322B", #Muy alto
+            "#086953", #Alto 
+            "#4C9562", #Medio
+            "#D1BB9E", #Bajo
+            "#C3BA6D") # Muy bajo
+
+mypalette <- leaflet::colorFactor(palette = paleta, 
+                                  domain = forcats::fct_relevel(IMM_2010$GM_2010, c("Muy alto", "Alto", "Medio", "Bajo", "Muy bajo")), 
+                                  na.color = "transparent")
+```
+
+
+## Popup `Muy alto`  
+
+```{r}
+df_municipio_1 <- IMM_2010 %>% 
+                   mutate(across(.cols = c(5:15,17), as.numeric)) %>%
+                    filter(GM_2010 %in% "Muy alto")
+
+popup_content_municipio_1 <- function(data) {
+  paste("<span class='popup-text'><span class='popup-Edo'>Estado: ", data$NOM_ENT, "</span><br>",
+        "<span class='popup-Mun'>Municipio: ", data$NOM_MUN, "</span><br>",
+        "Población Total: <span class='popup-Cif'><span class='popup-C1'>", formatC(data$POB_TOT, format = "f", big.mark = " ", digits = 0), "</span></span><br>",
+        "Grado de marginación: <span class='popup-Cif'><span class='popup-C1'>", data$GM_2010, "</span></span><br>",
+        "Índice de marginación: <span class='popup-Cif'><span class='popup-C1'>", format(round(data$IM_2010, 2), nsmall = 1), "</span></span><br>",
+        "Índice de marginación normalizado: <span class='popup-Cif'><span class='popup-C1'>", format(round(data$IMN_2010, 2), nsmall = 1), "</span></span><br>",
+        "% Población de 15 años y más analfabeta:", round(data$ANALF, 2), "<br>",
+        "% Población de 15 años o más sin educación básica:", round(data$SBASC, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin drenaje ni excusado:", round(data$OVSDE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin energía eléctrica:", round(data$OVSEE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin agua entubada:", round(data$OVSAE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares con piso de tierra:", round(data$OVPT, 2), "<br>",
+        "% Viviendas paticulares con algún nivel de hacinamiento:", round(data$VHAC, 2), "<br>",
+        "% Población en localidades con menos de 5 000 habitantes:", round(data$PL.5000, 2), "<br>",
+        "% Población ocupada con ingresos menores a 2SM:", round(data$PO2SM, 2), "</span>")
+}
+saveRDS(popup_content_municipio_1, paste0(here::here(), "/2010/Output/PopUp/popup_content_municipio_1.RDS"))
+```
+
+## Popup `Alto`
+
+```{r}
+df_municipio_2 <- IMM_2010 %>% 
+                   mutate(across(.cols = c(5:15,17), as.numeric)) %>%
+                    filter(GM_2010 %in% "Alto")
+
+popup_content_municipio_2 <- function(data) {
+  paste("<span class='popup-text'><span class='popup-Edo'>Estado: ", data$NOM_ENT, "</span><br>",
+        "<span class='popup-Mun'>Municipio: ", data$NOM_MUN, "</span><br>",
+        "Población Total: <span class='popup-Cif'><span class='popup-C2'>", formatC(data$POB_TOT, format = "f", big.mark = " ", digits = 0), "</span></span><br>",
+        "Grado de marginación: <span class='popup-Cif'><span class='popup-C2'>", data$GM_2010, "</span></span><br>",
+        "Índice de marginación: <span class='popup-Cif'><span class='popup-C2'>", format(round(data$IM_2010, 2), nsmall = 1), "</span></span><br>",
+        "Índice de marginación normalizado: <span class='popup-Cif'><span class='popup-C2'>", format(round(data$IMN_2010, 2), nsmall = 1), "</span></span><br>",
+        "% Población de 15 años y más analfabeta:", round(data$ANALF, 2), "<br>",
+        "% Población de 15 años o más sin educación básica:", round(data$SBASC, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin drenaje ni excusado:", round(data$OVSDE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin energía eléctrica:", round(data$OVSEE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin agua entubada:", round(data$OVSAE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares con piso de tierra:", round(data$OVPT, 2), "<br>",
+        "% Viviendas paticulares con algún nivel de hacinamiento:", round(data$VHAC, 2), "<br>",
+        "% Población en localidades con menos de 5 000 habitantes:", round(data$PL.5000, 2), "<br>",
+        "% Población ocupada con ingresos menores a 2SM:", round(data$PO2SM, 2), "</span>")
+}
+saveRDS(popup_content_municipio_2, paste0(here::here(), "/2010/Output/PopUp/popup_content_municipio_2.RDS"))
+```
+
+
+## Popup `Medio`
+
+```{r}
+df_municipio_3 <- IMM_2010 %>% 
+                   mutate(across(.cols = c(5:15,17), as.numeric)) %>%
+                    filter(GM_2010 %in% "Medio")
+
+popup_content_municipio_3 <- function(data) {
+  paste("<span class='popup-text'><span class='popup-Edo'>Estado: ", data$NOM_ENT, "</span><br>",
+        "<span class='popup-Mun'>Municipio: ", data$NOM_MUN, "</span><br>",
+        "Población Total: <span class='popup-Cif'><span class='popup-C3'>", formatC(data$POB_TOT, format = "f", big.mark = " ", digits = 0), "</span></span><br>",
+        "Grado de marginación: <span class='popup-Cif'><span class='popup-C3'>", data$GM_2010, "</span></span><br>",
+        "Índice de marginación: <span class='popup-Cif'><span class='popup-C3'>", format(round(data$IM_2010, 2), nsmall = 1), "</span></span><br>",
+        "Índice de marginación normalizado: <span class='popup-Cif'><span class='popup-C3'>", format(round(data$IMN_2010, 2), nsmall = 1), "</span></span><br>",
+        "% Población de 15 años y más analfabeta:", round(data$ANALF, 2), "<br>",
+        "% Población de 15 años o más sin educación básica:", round(data$SBASC, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin drenaje ni excusado:", round(data$OVSDE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin energía eléctrica:", round(data$OVSEE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin agua entubada:", round(data$OVSAE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares con piso de tierra:", round(data$OVPT, 2), "<br>",
+        "% Viviendas paticulares con algún nivel de hacinamiento:", round(data$VHAC, 2), "<br>",
+        "% Población en localidades con menos de 5 000 habitantes:", round(data$PL.5000, 2), "<br>",
+        "% Población ocupada con ingresos menores a 2SM:", round(data$PO2SM, 2), "</span>")
+}
+saveRDS(popup_content_municipio_3, paste0(here::here(), "/2010/Output/PopUp/popup_content_municipio_3.RDS"))
+```
+
+
+## Popup `Bajo`
+
+```{r}
+df_municipio_4 <- IMM_2010 %>% 
+                   mutate(across(.cols = c(5:15,17), as.numeric)) %>%
+                    filter(GM_2010 %in% "Bajo")
+
+popup_content_municipio_4 <- function(data) {
+  paste("<span class='popup-text'><span class='popup-Edo'>Estado: ", data$NOM_ENT, "</span><br>",
+        "<span class='popup-Mun'>Municipio: ", data$NOM_MUN, "</span><br>",
+        "Población Total: <span class='popup-Cif'><span class='popup-C4'>", formatC(data$POB_TOT, format = "f", big.mark = " ", digits = 0), "</span></span><br>",
+        "Grado de marginación: <span class='popup-Cif'><span class='popup-C4'>", data$GM_2010, "</span></span><br>",
+        "Índice de marginación: <span class='popup-Cif'><span class='popup-C4'>", format(round(data$IM_2010, 2), nsmall = 1), "</span></span><br>",
+        "Índice de marginación normalizado: <span class='popup-Cif'><span class='popup-C4'>", format(round(data$IMN_2010, 2), nsmall = 1), "</span></span><br>",
+        "% Población de 15 años y más analfabeta:", round(data$ANALF, 2), "<br>",
+        "% Población de 15 años o más sin educación básica:", round(data$SBASC, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin drenaje ni excusado:", round(data$OVSDE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin energía eléctrica:", round(data$OVSEE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin agua entubada:", round(data$OVSAE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares con piso de tierra:", round(data$OVPT, 2), "<br>",
+        "% Viviendas paticulares con algún nivel de hacinamiento:", round(data$VHAC, 2), "<br>",
+        "% Población en localidades con menos de 5 000 habitantes:", round(data$PL.5000, 2), "<br>",
+        "% Población ocupada con ingresos menores a 2SM:", round(data$PO2SM, 2), "</span>")
+}
+saveRDS(popup_content_municipio_4, paste0(here::here(), "/2010/Output/PopUp/popup_content_municipio_4.RDS"))
+```
+
+
+## Popup `Muy bajo`
+
+```{r}
+df_municipio_5 <- IMM_2010 %>% 
+                   mutate(across(.cols = c(5:15,17), as.numeric)) %>%
+                    filter(GM_2010 %in% "Muy bajo")
+
+popup_content_municipio_5 <- function(data) {
+  paste("<span class='popup-text'><span class='popup-Edo'>Estado: ", data$NOM_ENT, "</span><br>",
+        "<span class='popup-Mun'>Municipio: ", data$NOM_MUN, "</span><br>",
+        "Población Total: <span class='popup-Cif'><span class='popup-C5'>", formatC(data$POB_TOT, format = "f", big.mark = " ", digits = 0), "</span></span><br>",
+        "Grado de marginación: <span class='popup-Cif'><span class='popup-C5'>", data$GM_2010, "</span></span><br>",
+        "Índice de marginación: <span class='popup-Cif'><span class='popup-C5'>", format(round(data$IM_2010, 2), nsmall = 1), "</span></span><br>",
+        "Índice de marginación normalizado: <span class='popup-Cif'><span class='popup-C5'>", format(round(data$IMN_2010, 2), nsmall = 1), "</span></span><br>",
+        "% Población de 15 años y más analfabeta:", round(data$ANALF, 2), "<br>",
+        "% Población de 15 años o más sin educación básica:", round(data$SBASC, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin drenaje ni excusado:", round(data$OVSDE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin energía eléctrica:", round(data$OVSEE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares sin agua entubada:", round(data$OVSAE, 2), "<br>",
+        "% Ocupantes en viviendas paticulares con piso de tierra:", round(data$OVPT, 2), "<br>",
+        "% Viviendas paticulares con algún nivel de hacinamiento:", round(data$VHAC, 2), "<br>",
+        "% Población en localidades con menos de 5 000 habitantes:", round(data$PL.5000, 2), "<br>",
+        "% Población ocupada con ingresos menores a 2SM:", round(data$PO2SM, 2), "</span>")
+}
+saveRDS(popup_content_municipio_5, paste0(here::here(), "/2010/Output/PopUp/popup_content_municipio_5.RDS"))
+```

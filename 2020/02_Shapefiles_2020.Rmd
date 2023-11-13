@@ -1,0 +1,230 @@
+---
+title: "Shapefiles 2020"
+author: "Diana Villasana Ocampo"
+output:
+   html_document:
+      highlight: tango
+      theme: flatly
+      toc: yes
+      toc_depth: 2
+      toc_float:
+        collapsed: yes
+---
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = FALSE, cache.lazy = FALSE, 
+                         eval = FALSE, class.source = "fold-show")
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+options(digits = 2, encoding = "UTF8")
+```   
+ 
+```{r, echo=FALSE}
+rm(list = ls())
+```
+
+```{r, echo=FALSE}
+setwd(here::here())
+```
+
+**Librerías** 
+
+```{r}
+require(dplyr)
+require(forcats)
+require(rgdal)
+require(tibble)
+require(sf)
+require(sp)
+require(stringr)
+```
+
+
+## Índice de marginación 2020
+
+**Bases de datos***
+- Nivel estatal
+- Nivel municipal
+- Nivel localidad
+- Nivel AGEB 
+
+
+```{r}
+load(paste0(here::here(), "/2020/Output/IMM_2020.RData"))
+```
+
+
+## Shapefiles
+
+**Shapefile estados 2020**
+
+```{r}
+shape_estados <- readOGR(dsn = "D:/MGN/MGN Diciembre 2020/MGN Diciembre 2020/conjunto_de_datos",
+                          layer = "00ent",
+                            encoding = "UTF-8",
+                             use_iconv = TRUE)
+
+shape_estados <- spTransform(shape_estados, CRSobj = CRS('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'))
+```
+
+
+**Shapefile municipios 2020**
+
+```{r}
+shape_municipios <- readOGR(dsn = "D:/MGN/MGN Diciembre 2020/MGN Diciembre 2020/conjunto_de_datos",
+                             layer = "00mun",
+                              encoding = "UTF-8",
+                               use_iconv = TRUE)
+
+shape_municipios <- spTransform(shape_municipios, CRSobj = CRS('+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs'))
+```
+
+
+## ShapefilesDataFrame
+
+**Se insertan los datos del índice de marginación y se seccionan por grado de marginación**
+
+### Municipios
+
+```{r}
+shape_municipios@data <- shape_municipios@data %>%
+                          mutate(CVE_MUN = paste0(.$CVE_ENT, .$CVE_MUN)) %>%
+                           select(CVE_MUN)
+
+shape_municipios <- shape_municipios %>%
+                     sp::spChFIDs(., str_pad(shape_municipios@data$CVE_MUN, 5, "left", pad = "0"))
+```
+
+
+#### Capas de municipios
+
+- `Muy alto` ~ `1` | 204
+- `Alto` ~ `2` | 586
+- `Medio` ~ `3` | 494 
+- `Bajo` ~ `4` | 530
+- `Muy bajo` ~ `5` | 655
+
+
+```{r}
+capa_municipios_1 <- shape_municipios %>%
+                      spdplyr:::inner_join.Spatial(., IMM_2020 %>% 
+                                                       select(CVE_MUN, GM_2020) %>%
+                                                        filter(GM_2020 == "Muy alto"),
+                                                          by = c("CVE_MUN")) %>%
+                       select(CVE_MUN)
+capa_municipios_2 <- shape_municipios %>%
+                      spdplyr:::inner_join.Spatial(., IMM_2020 %>% 
+                                                       select(CVE_MUN, GM_2020) %>%
+                                                        filter(GM_2020 == "Alto"),
+                                                          by = c("CVE_MUN"))  %>%
+                       select(CVE_MUN)
+
+capa_municipios_3 <- shape_municipios %>%
+                      spdplyr:::inner_join.Spatial(., IMM_2020 %>% 
+                                                       select(CVE_MUN, GM_2020) %>%
+                                                        filter(GM_2020 == "Medio"),
+                                                          by = c("CVE_MUN"))  %>%
+                       select(CVE_MUN)
+
+capa_municipios_4 <- shape_municipios %>%
+                      spdplyr:::inner_join.Spatial(., IMM_2020 %>% 
+                                                       select(CVE_MUN, GM_2020) %>%
+                                                        filter(GM_2020 == "Bajo"),
+                                                          by = c("CVE_MUN"))  %>%
+                       select(CVE_MUN)
+capa_municipios_5 <- shape_municipios %>%
+                      spdplyr:::inner_join.Spatial(., IMM_2020 %>% 
+                                                       select(CVE_MUN, GM_2020) %>%
+                                                        filter(GM_2020 == "Muy bajo"),
+                                                          by = c("CVE_MUN"))  %>%
+                       select(CVE_MUN)
+```
+
+**Se guardan los shapefiles en un archivo `RDS`**
+
+```{r}
+saveRDS(shape_estados, paste0(here::here(), "/2020/Output/Shapes/shape_estados.rds"))
+saveRDS(capa_municipios_1, paste0(here::here(), "/2020/Output/Shapes/shape_municipios_1.rds"))
+saveRDS(capa_municipios_2, paste0(here::here(), "/2020/Output/Shapes/shape_municipios_2.rds"))
+saveRDS(capa_municipios_3, paste0(here::here(), "/2020/Output/Shapes/shape_municipios_3.rds"))
+saveRDS(capa_municipios_4, paste0(here::here(), "/2020/Output/Shapes/shape_municipios_4.rds"))
+saveRDS(capa_municipios_5, paste0(here::here(), "/2020/Output/Shapes/shape_municipios_5.rds"))
+```
+
+
+#### Geojson 
+
+```{r}
+require(geojsonio)
+capa_estados_json <- geojsonio::geojson_json(shape_estados, geometry = "polygon")
+capa_municipios_1_json <- geojsonio::geojson_json(capa_municipios_1 %>%
+                                                   sp::spChFIDs(., str_pad(.@data$CVE_MUN, 5, "left", pad = "0")), 
+                                                    geometry = "polygon")
+capa_municipios_2_json <- geojsonio::geojson_json(capa_municipios_2 %>%
+                                                   sp::spChFIDs(., str_pad(.@data$CVE_MUN, 5, "left", pad = "0")), 
+                                                    geometry = "polygon")
+capa_municipios_3_json <- geojsonio::geojson_json(capa_municipios_3 %>%
+                                                   sp::spChFIDs(., str_pad(.@data$CVE_MUN, 5, "left", pad = "0")), 
+                                                    geometry = "polygon")
+capa_municipios_4_json <- geojsonio::geojson_json(capa_municipios_4 %>%
+                                                   sp::spChFIDs(., str_pad(.@data$CVE_MUN, 5, "left", pad = "0")), 
+                                                    geometry = "polygon")
+capa_municipios_5_json <- geojsonio::geojson_json(capa_municipios_5 %>%
+                                                   sp::spChFIDs(., str_pad(.@data$CVE_MUN, 5, "left", pad = "0")), 
+                                                    geometry = "polygon")
+```
+
+
+### Reducción de los mapas 
+
+```{r}
+require(rmapshaper)
+# Se reduce el tamaño y se guarda como archivo geojason 
+capa_estados_mapshaper <- rmapshaper::ms_simplify(capa_estados_json, keep = 0.3, weighting = 0, keep_shapes = TRUE)
+capa_municipios_1_mapshaper <- rmapshaper::ms_simplify(capa_municipios_1_json, keep = 0.2, weighting = 0, keep_shapes = TRUE)
+capa_municipios_2_mapshaper <- rmapshaper::ms_simplify(capa_municipios_2_json, keep = 0.2, weighting = 0, keep_shapes = TRUE)
+capa_municipios_3_mapshaper <- rmapshaper::ms_simplify(capa_municipios_3_json, keep = 0.2, weighting = 0, keep_shapes = TRUE)
+capa_municipios_4_mapshaper <- rmapshaper::ms_simplify(capa_municipios_4_json, keep = 0.2, weighting = 0, keep_shapes = TRUE)
+capa_municipios_5_mapshaper <- rmapshaper::ms_simplify(capa_municipios_5_json, keep = 0.2, weighting = 0, keep_shapes = TRUE)
+```
+
+
+```{r}
+# Se guarda en un archivo geojson 
+geojsonio::geojson_write(capa_estados_mapshaper, file = paste0(here::here(), "/2020/Output/Shapes/estados_json.geojson"))
+geojsonio::geojson_write(capa_municipios_1_mapshaper, file = paste0(here::here(), "/2020/Output/Shapes/municipios_1_json.geojson"))
+geojsonio::geojson_write(capa_municipios_2_mapshaper, file = paste0(here::here(), "/2020/Output/Shapes/municipios_2_json.geojson"))
+geojsonio::geojson_write(capa_municipios_3_mapshaper, file = paste0(here::here(), "/2020/Output/Shapes/municipios_3_json.geojson"))
+geojsonio::geojson_write(capa_municipios_4_mapshaper, file = paste0(here::here(), "/2020/Output/Shapes/municipios_4_json.geojson"))
+geojsonio::geojson_write(capa_municipios_5_mapshaper, file = paste0(here::here(), "/2020/Output/Shapes/municipios_5_json.geojson"))
+```
+
+```{r}
+# Se guarda como objeto
+saveRDS(capa_estados_mapshaper, paste0(here::here(), "/2020/Output/Shapes/capa_estados_mapshaper.rds"))
+saveRDS(capa_municipios_1_mapshaper, paste0(here::here(), "/2020/Output/Shapes/capa_municipios_1_mapshaper.rds"))
+saveRDS(capa_municipios_2_mapshaper, paste0(here::here(), "/2020/Output/Shapes/capa_municipios_2_mapshaper.rds"))
+saveRDS(capa_municipios_3_mapshaper, paste0(here::here(), "/2020/Output/Shapes/capa_municipios_3_mapshaper.rds"))
+saveRDS(capa_municipios_4_mapshaper, paste0(here::here(), "/2020/Output/Shapes/capa_municipios_4_mapshaper.rds"))
+saveRDS(capa_municipios_5_mapshaper, paste0(here::here(), "/2020/Output/Shapes/capa_municipios_5_mapshaper.rds"))
+```
+
+
+
+```{r}
+## Shapefiles
+shape_estados <- geojsonio::geojson_read(paste0(here::here(), "/2020/Output/Shapes/estados_json.geojson"), what = "sp")
+```
+### Topojson
+
+```{r}
+require(geojsonio)
+capa_estados_topojson <- capa_estados_mapshaper %>% geojsonio::geo2topo()
+```
+
+```{r}
+# Se guarda como objeto
+saveRDS(capa_estados_topojson, paste0(here::here(), "/2020/Output/Shapes/capa_estados_topojson.rds"))
+        
+```
+
+

@@ -1,0 +1,63 @@
+/*Css para cambiar el formato en los popups*/
+
+.popup-Edo { /*Para estado*/
+  font-family: 'Century Gothic', sans-serif; /* Cambiar por el tipo de letra deseado */
+  font-size: 20px; /* Cambiar por el tamaño de letra deseado para texto de estado*/
+  color: black; /* Cambiar por el color deseado para texto de Estado*/
+}
+
+.popup-Mun { /*Para municipio*/
+  font-family: 'Century Gothic', sans-serif; /* Cambiar por el tipo de letra deseado */
+  font-size: 18px; /* Cambiar por el tamaño de letra deseado */
+  color: black; /* Cambiar por el color deseado para texto general */
+}
+
+.popup-Loc { /*Para localidad*/
+  font-family: 'Century Gothic', sans-serif; /* Cambiar por el tipo de letra deseado para texto de localidad*/
+  font-size: 16px; /* Cambiar por el tamaño de letra deseado para texto de localidad*/
+  color: black; /* Cambiar por el color deseado para texto de localidad*/
+}
+
+.popup-Cif { /*Para texto índice de las cifras (no confundir con el dato)*/
+  font-family: 'Century Gothic', sans-serif; /* Cambiar por el tipo de letra deseado para texto de cifras*/
+  font-weight: bold;
+  font-size: 15px; /* Cambiar por el tamaño de letra deseado para texto de cifras*/
+  color: black; /* Cambiar por el color deseado para texto de cifras*/
+}
+.popup-text { /*Para texto general de los popups)*/
+  font-family: 'Century Gothic', sans-serif; /* Cambiar por el tipo de letra deseado para texto de cifras*/
+  font-size: 13px; /* Cambiar por el tamaño de letra deseado para texto de cifras*/
+  color: black; /* Cambiar por el color deseado para texto de cifras*/
+}
+
+/*Para Color de cifras*/
+/*Estilo capa 1 Muy Alto*/
+.popup-C1 { 
+  color: #13322B; /* Cambiar por el color deseado para las cifras */
+}
+
+/*Estilo de la capa 2 Alto*/
+.popup-C2 {
+  color: #086953;
+}
+
+
+/*Estilo de la capa 3 Medio*/
+.popup-C3 { 
+  color: #4C9562; 
+}
+
+
+/*Estilo de la capa 4 Bajo*/
+.popup-C4 { 
+  color: #D1BB9E; 
+}
+
+
+/*Estilo de la capa 5 Muy Bajo*/
+.popup-C5 { 
+  color: #C3BA6D; 
+}
+
+
+
