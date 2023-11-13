@@ -52,8 +52,8 @@ El resultado final se encuentra en el siguiente enlace:
 
 <html>
 <body>
-<a href = "https://dvillasanao.github.io/IME_Leaflet/IME_2010-2020.html" target="_blank">
-<img src="https://github.com/dvillasanao/IME_Leaflet/blob/leaflet-branch/logo/img01.png?raw=true"/></a>
+<a href = "https://dvillasanao.github.io/IMM_Leaflet/IMM_2010-2020.html" target="_blank">
+<img src="https://github.com/dvillasanao/IMM_Leaflet/blob/main/logo/img01.png?raw=true"/></a>
 </body>
 </html>
 
