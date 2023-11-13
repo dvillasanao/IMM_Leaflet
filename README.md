@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# IMM_Leaflet
-Mapa dinámico del índice de marginación a nivel municipal
-=======
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
@@ -39,13 +35,14 @@ estructura de archivos:
 
 ``` r
 list.files(here::here(), all.files = TRUE)
-#>  [1] "."                 ".."                ".git"             
-#>  [4] ".gitignore"        ".Rhistory"         ".Rproj.user"      
-#>  [7] "2010"              "2015"              "2020"             
-#> [10] "css_style.css"     "IMM_2010-2020.Rmd" "IMM_2010.html"    
-#> [13] "IMM_2010_files"    "IMM_2015.html"     "IMM_2015_files"   
-#> [16] "IMM_2020.html"     "IMM_2020_files"    "IMM_Leaflet.Rproj"
-#> [19] "logo"              "README.md"         "README.Rmd"
+#>  [1] "."                  ".."                 ".git"              
+#>  [4] ".gitignore"         ".Rhistory"          ".Rproj.user"       
+#>  [7] "2010"               "2015"               "2020"              
+#> [10] "css_style.css"      "IMM_2010-2020.html" "IMM_2010-2020.Rmd" 
+#> [13] "IMM_2010.html"      "IMM_2010_files"     "IMM_2015.html"     
+#> [16] "IMM_2015_files"     "IMM_2020.html"      "IMM_2020_files"    
+#> [19] "IMM_Leaflet.Rproj"  "logo"               "README.md"         
+#> [22] "README.Rmd"
 ```
 
 El resultado final se encuentra en el siguiente enlace:
@@ -67,4 +64,3 @@ sesion_info <- devtools::session_info()
 ```
 
 <table class=\" lightable-classic\" style='font-size: 10px; font-family: \"Arial Narrow\", \"Source Sans Pro\", sans-serif; margin-left: auto; margin-right: auto;'> <thead>  <tr>   <th style=\"text-align:center;\"> package </th>   <th style=\"text-align:center;\"> loadedversion </th>   <th style=\"text-align:center;\"> source </th>  </tr> </thead><tbody>  <tr>   <td style=\"text-align:center;padding: 5px\"> dplyr </td>   <td style=\"text-align:center;padding: 5px\"> 1.1.3 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.2) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> forcats </td>   <td style=\"text-align:center;padding: 5px\"> 1.0.0 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> htmltools </td>   <td style=\"text-align:center;padding: 5px\"> 0.5.5 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> htmlwidgets </td>   <td style=\"text-align:center;padding: 5px\"> 1.6.2 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> jsonlite </td>   <td style=\"text-align:center;padding: 5px\"> 1.8.7 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> leafgl </td>   <td style=\"text-align:center;padding: 5px\"> 0.1.1 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> leaflet </td>   <td style=\"text-align:center;padding: 5px\"> 2.2.0 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> leaflet.extras </td>   <td style=\"text-align:center;padding: 5px\"> 1.0.0 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> mapview </td>   <td style=\"text-align:center;padding: 5px\"> 2.11.0 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> RColorBrewer </td>   <td style=\"text-align:center;padding: 5px\"> 1.1-3 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.0) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> rgdal </td>   <td style=\"text-align:center;padding: 5px\"> 1.6-7 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> sf </td>   <td style=\"text-align:center;padding: 5px\"> 1.0-14 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> sp </td>   <td style=\"text-align:center;padding: 5px\"> 2.1-0 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> spdplyr </td>   <td style=\"text-align:center;padding: 5px\"> 0.4.0 </td>   <td style=\"text-align:center;padding: 5px\"> Github (mdsumner/spdplyr@e14dec9017a96c309065ab319da96c839cac6f58) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> stringr </td>   <td style=\"text-align:center;padding: 5px\"> 1.5.0 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr>  <tr>   <td style=\"text-align:center;padding: 5px\"> tibble </td>   <td style=\"text-align:center;padding: 5px\"> 3.2.1 </td>   <td style=\"text-align:center;padding: 5px\"> CRAN (R 4.3.1) </td>  </tr></tbody></table>
->>>>>>> leaflet-branch
